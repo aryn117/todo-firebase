@@ -21,14 +21,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route
-            path='/login'
-            element={
-              <UnprotectedRoute>
-                <LoginPage />
-              </UnprotectedRoute>
-            }
-          />
+          <Route path='/login' element={<LoginPage />} />
           <Route
             path='/signup'
             element={

@@ -1,13 +1,31 @@
 import LoginGraphic from './../../assets/LoginGraphic.svg';
 import { useRef, useCallback, useState } from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
+
+import { useUserAuth } from '../../context/UserAuthContext';
+import { setDoc, doc } from 'firebase/firestore';
+import { db } from './../../context/firebase';
 
 const SignUpPage = () => {
   const confirmEmailRef = useRef(null);
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
 
-  const [signUpError, setSignUpError] = useState('');
+  const [signUpError, setError] = useState('');
+  const { firebaseSignupHandler, user } = useUserAuth();
+  const navigate = useNavigate();
+
+  //? Error Handler Function //////////////////////////////////
+
+  const setSignUpError = errorString => {
+    setError(errorString);
+    const timer = setTimeout(() => {
+      setError('');
+      return clearTimeout(timer);
+    }, 3000);
+  };
+
+  //? /////////////////////////////////////////////////////////
 
   const signUpHandler = useCallback(async () => {
     //* Form Validation //////////////////////////////////////////////
@@ -29,16 +47,30 @@ const SignUpPage = () => {
     //* SignUp Request to Firebase ////////////////////////////////////
 
     try {
+      const res = await firebaseSignupHandler(
+        emailRef.current.value,
+        passwordRef.current.value
+      );
+
+      await setDoc(doc(db, 'Users', user?.uid), {
+        lists: [
+          {
+            listID: '0.05712737302733828',
+            title: 'Personal',
+            tasks: [],
+          },
+        ],
+        currentList: 0,
+      });
+
+      navigate('/');
     } catch (error) {
-      setSignUpError(error.message);
+      console.log(error, error.message);
+      if (error.message.indexOf('email-already-in-use') !== -1) {
+        setSignUpError('You Already Have an account, Please Log in');
+      }
     }
-
     //* Clear Inputs and Errors ///////////////////////////////////////////////
-
-    setSignUpError('');
-    emailRef.current.value = '';
-    passwordRef.current.value = '';
-    confirmEmailRef.current.value = '';
   }, []);
 
   return (

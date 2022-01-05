@@ -21,7 +21,7 @@ const LoginPage = () => {
     const timer = setTimeout(() => {
       setError('');
       return clearTimeout(timer);
-    }, 2000);
+    }, 3000);
   };
   //? ///////////////////////////////////////////////////
 
@@ -53,9 +53,12 @@ const LoginPage = () => {
       );
       navigate('/');
     } catch (error) {
+      console.log(error, error.message);
       if (error.message.indexOf('wrong-password') !== -1) {
         setLoginError('Wrong Email/Password');
-        return;
+      }
+      if (error.message.indexOf('user-not-found') !== -1) {
+        setLoginError('No Account Found, Please Create One ');
       }
     }
 
@@ -93,11 +96,11 @@ const LoginPage = () => {
             className='w-full px-4 py-4 mt-6 ml-2 text-xl font-bold text-white bg-blue-400 border-2 border-blue-400 rounded-full shadow-xl text-md text-semibold'>
             Log In
           </button>
-          {/* <button
+          <button
             onClick={firebaseGoogleSigninHandler}
-            className='w-full px-4 py-0 mt-6 mr-2 text-3xl font-bold text-center text-white border-2 border-blue-400 rounded-full shadow-xl text-md text-semibold'>
+            className='items-center hidden w-full px-4 py-0 mt-6 mr-2 text-3xl font-bold text-center text-white border-2 border-blue-400 rounded-full shadow-xl sm:flex text-md text-semibold'>
             <FcGoogle className='mx-auto ' />
-          </button> */}
+          </button>
         </div>
 
         <p className='mt-2 text-center text-red-400 text-md'>{loginError}</p>

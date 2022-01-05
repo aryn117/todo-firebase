@@ -25,12 +25,15 @@ const HomePage = () => {
   React.useEffect(() => {
     if (!user?.uid) return;
     const unsub = onSnapshot(doc(db, 'Users', user?.uid), doc => {
-      setData(prev => {
-        return {
-          ...prev,
-          lists: doc.data().lists,
-        };
-      });
+      console.log(doc.data());
+      if (doc.data().lists) {
+        setData(prev => {
+          return {
+            ...prev,
+            lists: doc.data().lists,
+          };
+        });
+      }
     });
   }, [user?.uid]);
 
