@@ -1,14 +1,19 @@
-import { useGlobalContext } from './../../../context/context';
 import { useRef, useState } from 'react';
-import cancelIcon from './../../../assets/CancelIcon.svg';
+import cancelIcon from './../assets/CancelIcon.svg';
+
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { createNewList } from '../redux/userData';
 
 //? /////////////////////////////////////////////////////////
 //* Modal Window For Creating A New List/////////////////////
 
-const CreateNewListModal = ({ closeModal }) => {
-  const { data, setData } = useGlobalContext();
+const CreateNewListPage = ({ closeModal }) => {
   const inputRef = useRef(null);
   const [invalidInput, setInvalidInput] = useState(false);
+
+  const dispatch = useDispatch();
+  const userData = useSelector(state => state.userData);
 
   //* Create New List Function ///////////////////////////////////////
   const createNewListSubmitHandler = event => {
@@ -16,19 +21,7 @@ const CreateNewListModal = ({ closeModal }) => {
     if (inputRef.current.value === '') return;
     if (inputRef.current.value.indexOf(' ') !== -1) return;
 
-    setData(previousValues => {
-      return {
-        ...previousValues,
-        lists: [
-          ...previousValues.lists,
-          {
-            listID: String(Math.random()),
-            title: inputRef.current.value,
-            tasks: [],
-          },
-        ],
-      };
-    });
+    dispatch(createNewList(inputRef.current.value));
 
     inputRef.current.value = '';
     closeModal(false);
@@ -74,4 +67,4 @@ const CreateNewListModal = ({ closeModal }) => {
   );
 };
 
-export default CreateNewListModal;
+export default CreateNewListPage;

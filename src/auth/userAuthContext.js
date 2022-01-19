@@ -9,24 +9,22 @@ import {
   signInWithPopup,
 } from 'firebase/auth';
 import { auth } from './firebase';
-import { useGlobalContext } from './context';
 
 const userAuthContext = createContext();
 
 export function UserAuthContextProvider({ children }) {
-  const { user, setUser } = useGlobalContext();
-  // const [user, setUser] = useState({});
+  const [user, setUser] = useState({});
 
-  function firebaseLoginHandler(email, password) {
+  function login(email, password) {
     return signInWithEmailAndPassword(auth, email, password);
   }
-  function firebaseSignupHandler(email, password) {
+  function signup(email, password) {
     return createUserWithEmailAndPassword(auth, email, password);
   }
-  function firebaseLogoutHandler() {
+  function logout() {
     return signOut(auth);
   }
-  function firebaseGoogleSigninHandler() {
+  function googleSignin() {
     const googleAuthProvider = new GoogleAuthProvider();
     return signInWithPopup(auth, googleAuthProvider);
   }
@@ -45,10 +43,10 @@ export function UserAuthContextProvider({ children }) {
     <userAuthContext.Provider
       value={{
         user,
-        firebaseLoginHandler,
-        firebaseSignupHandler,
-        firebaseLogoutHandler,
-        firebaseGoogleSigninHandler,
+        login,
+        signup,
+        logout,
+        googleSignin,
       }}>
       {children}
     </userAuthContext.Provider>

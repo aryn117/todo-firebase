@@ -1,24 +1,21 @@
-import cancelIcon from './../../../assets/CancelIcon.svg';
-import { useUserAuth } from '../../../context/UserAuthContext';
-import { useNavigate } from 'react-router-dom';
+import { useUserAuth } from '../auth/userAuthContext';
 
-const Settings = ({ setSettingsToggle }) => {
-  const { user, firebaseLogoutHandler } = useUserAuth();
+import cancelIcon from './../assets/CancelIcon.svg';
 
-  const navigate = useNavigate();
+const SettingsPage = ({ setSettingsToggle }) => {
+  const { logout, user } = useUserAuth();
 
   const logoutHandler = async () => {
     try {
-      const res = await firebaseLogoutHandler();
-      navigate('/login');
+      await logout();
     } catch (error) {
-      console.error(error);
+      console.log(error);
     }
   };
 
   return (
     <div className='absolute top-0 bottom-0 left-0 right-0 z-10 flex flex-col backdrop-blur-lg'>
-      <div className='flex flex-col w-[75%] h-full bg-blue-500 py-8 pl-8 rounded-r-[3rem] '>
+      <div className='flex flex-col w-[75%] h-full bg-blue-500 py-8 pl-8 rounded-r-[2rem] '>
         <button
           className='p-4 bg-red-400 rounded-lg shadow-lg w-fit'
           onClick={() => setSettingsToggle(false)}>
@@ -30,14 +27,17 @@ const Settings = ({ setSettingsToggle }) => {
         <div className='flex w-32 mt-12 border-2 border-white rounded-full '>
           <img
             className='p-2 rounded-full shadow-lg object-fit '
-            src={`https://avatars.dicebear.com/api/big-smile/${user.email}.svg`}
+            src={`https://avatars.dicebear.com/api/big-smile/${user.displayName}.svg`}
             alt='avatar'
           />
         </div>
-        <p className='mt-4 text-xl text-white '> {user.email}</p>
+        <p className='mt-4 text-xl font-semibold text-white '>
+          {user.displayName}
+        </p>
+        <p className='mt-1 text-white text-md '>{user.email}</p>
         <button
           onClick={logoutHandler}
-          className='px-8 py-2 mt-4 transition-all bg-white rounded-lg shadow-md w-fit active:scale-95'>
+          className='px-8 py-2 mt-12 transition-all bg-white rounded-lg shadow-md w-fit active:scale-95'>
           Logout
         </button>
       </div>
@@ -45,4 +45,4 @@ const Settings = ({ setSettingsToggle }) => {
   );
 };
 
-export default Settings;
+export default SettingsPage;
