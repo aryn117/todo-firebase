@@ -4,6 +4,9 @@ import { useState, useRef, useEffect } from 'react';
 import ListItem from './../components/HomePage/ListItem';
 import TasksListView from './../components/HomePage/TasksListView';
 
+//framer imports
+import { motion, AnimatePresence } from 'framer-motion';
+
 //pages imports
 import CreateNewListPage from './CreateNewListPage';
 import SettingsPage from './SettingsPage';
@@ -68,22 +71,24 @@ const HomePage = () => {
     <>
       <div className='flex relative flex-col h-full sm:rounded-xl sm:border-2 sm:border-blue-500 w-full overflow-y-clip p-2 bg-[#F5FCFF]'>
         {/* CREATE NEW LIST PAGE **********************************************************************/}
-        {openNewListModal && (
-          <CreateNewListPage closeModal={setOpenNewListModal} />
-        )}
-        {/* DELETE A FULL LIST PAGE *******************************************************************/}
-        {openDeleteFullListModal && (
-          <DeleteFullListPage closeModal={setOpenDeleteFullListModal} />
-        )}
-        {/*  SETTINGS PAGE ****************************************************************************/}
-        {openSettingsToggle && (
-          <SettingsPage setSettingsToggle={setOpenSettingsToggle} />
-        )}
+        <AnimatePresence>
+          {openNewListModal && (
+            <CreateNewListPage closeModal={setOpenNewListModal} />
+          )}
+          {/* DELETE A FULL LIST PAGE *******************************************************************/}
+          {openDeleteFullListModal && (
+            <DeleteFullListPage closeModal={setOpenDeleteFullListModal} />
+          )}
+          {/*  SETTINGS PAGE ****************************************************************************/}
+          {openSettingsToggle && (
+            <SettingsPage setSettingsToggle={setOpenSettingsToggle} />
+          )}
+        </AnimatePresence>
 
         {/* OPEN SETTINGS BUTTON ***********************************************************************/}
         <div className='flex flex-row'>
           <button
-            className='px-4 py-5 '
+            className='px-4 py-5 active:scale-95 '
             onClick={() => setOpenSettingsToggle(true)}>
             <img src={NavbarIcon} alt='open navbar' />
           </button>

@@ -80,14 +80,25 @@ export const userDataSlice = createSlice({
 
     createNewList: (state, action) => {
       const listName = action.payload;
+      let duplicateListCreatedFlag = false; // flag for duplicate list creation
 
-      return {
-        lists: [
-          ...state.lists,
-          { listName, listID: String(Math.random()), listItems: [] },
-        ],
-        currentList: 0,
-      };
+      // check for duplicate list creation (sets flag = true)
+      state.lists.forEach(item => {
+        if (item.listName === listName) duplicateListCreatedFlag = true;
+      });
+
+      if (duplicateListCreatedFlag) {
+        console.log('Cannot Make Duplicate List');
+        return { lists: [...state.lists], currentList: 0 };
+      } else {
+        return {
+          lists: [
+            ...state.lists,
+            { listName, listID: String(Math.random()), listItems: [] },
+          ],
+          currentList: 0,
+        };
+      }
     },
 
     setCurrentList: (state, action) => {

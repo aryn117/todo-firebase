@@ -1,6 +1,8 @@
 import { useRef, useState } from 'react';
 import cancelIcon from './../assets/CancelIcon.svg';
 
+import { motion, AnimatePresence } from 'framer-motion';
+
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { createNewList } from '../redux/userData';
@@ -38,32 +40,43 @@ const CreateNewListPage = ({ closeModal }) => {
   };
 
   return (
-    <div className='absolute top-0 bottom-0 left-0 right-0 z-10 flex flex-col items-center justify-center backdrop-blur-lg '>
-      <button
-        className='absolute p-4 bg-red-400 rounded-lg shadow-lg w-fit top-8 right-8'
-        onClick={() => closeModal(false)}>
-        <img alt='cancel button' className='w-4' src={cancelIcon} />
-      </button>
-      <form
-        onSubmit={event => createNewListSubmitHandler(event)}
-        onChange={validityCheckHandler}
-        className='flex flex-col justify-between w-full px-8 h-fit '
-        action='submit'>
-        <input
-          ref={inputRef}
-          type='text'
-          placeholder='Create New List'
-          className={`px-4 py-3 text-lg bg-white border-2  rounded-lg shadow-lg ${
-            invalidInput ? 'border-red-600 ' : 'border-black'
-          } `}
-        />
+    <motion.div
+      animate={{ opacity: 1 }}
+      initial={{ opacity: 0 }}
+      exit={{ opacity: 0 }}
+      className='absolute top-0 bottom-0 left-0 right-0 z-10 flex flex-col items-center justify-center backdrop-blur-lg '>
+      <motion.div
+        className='flex flex-1 items-center justify-center w-full'
+        animate={{ x: 0 }}
+        initial={{ x: -150 }}
+        exit={{ x: -150 }}
+        transition={{ type: 'tween', ease: 'easeOut' }}>
         <button
-          type='submit'
-          className='px-5 mt-6 py-3 text-lg text-white bg-blue-400 rounded-lg shadow-lg transition-all transition-duration-[300ms]  active:scale-[0.98] '>
-          Create New List{' '}
+          className='absolute p-4 bg-red-400 rounded-lg shadow-lg w-fit top-8 right-8'
+          onClick={() => closeModal(false)}>
+          <img alt='cancel button' className='w-4' src={cancelIcon} />
         </button>
-      </form>
-    </div>
+        <form
+          onSubmit={event => createNewListSubmitHandler(event)}
+          onChange={validityCheckHandler}
+          className='flex flex-col justify-between w-full px-8 h-fit '
+          action='submit'>
+          <input
+            ref={inputRef}
+            type='text'
+            placeholder='Create New List'
+            className={`px-4 py-3 text-lg bg-white border-2  rounded-lg shadow-lg ${
+              invalidInput ? 'border-red-600 ' : 'border-black'
+            } `}
+          />
+          <button
+            type='submit'
+            className='px-5 mt-6 py-3 text-lg text-white bg-blue-400 rounded-lg shadow-lg transition-all transition-duration-[300ms]  active:scale-[0.98] '>
+            Create New List{' '}
+          </button>
+        </form>
+      </motion.div>
+    </motion.div>
   );
 };
 
