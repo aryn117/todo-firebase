@@ -59,9 +59,9 @@ const HomePage = () => {
           dispatch(initialSync(doc.data().lists));
           triggered = true;
         }
-        if (triggered) {
-          listener();
-        }
+        // if (triggered) {
+        //   listener();
+        // }
       });
 
       setLoading(false);
