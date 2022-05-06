@@ -200,7 +200,7 @@ const HomePage = () => {
               ref={inputRef}
               type='text'
               placeholder='Create Task✅'
-              className='flex w-[80%] px-4 dark:bg-gray-900 dark:text-white py-3 mr-2 text-lg shadow-lg outline-none rounded-xl '
+              className='flex w-[80%] px-4 dark:bg-gray-900 dark:text-white text-gray-800 py-3 mr-2 text-lg shadow-lg outline-none rounded-xl '
             />
             <button
               onClick={() => {

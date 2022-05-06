@@ -14,7 +14,7 @@ const TaskItem = ({ checked, title, id }) => {
       initial={{ x: -100, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
       exit={{ x: -150, opacity: 0 }}
-      className='flex flex-row items-center justify-between px-4 py-2 my-2 bg-white dark:bg-gray-900 dark:text-white border-2 border-blue-400 rounded-xl text-md '>
+      className='flex flex-row items-center justify-between px-4 py-2 my-2 bg-white text-gray-800 dark:bg-gray-900 dark:text-white border-2 border-blue-400 rounded-xl text-md '>
       <div className='flex flex-row items-center '>
         <button
           onClick={() => dispatch(checkItem(id))}
