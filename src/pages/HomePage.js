@@ -148,7 +148,7 @@ const HomePage = () => {
           </button>
           {/* navbar date   */}
           <div className='flex  justify-between items-center'>
-            <h1 className='text-xl font-semibold pr-2'>
+            <h1 className='text-xl text-gray-800 dark:text-white font-semibold pr-2'>
               {days[new Date().getDay()]}, {new Date().getDay()}
               <span className='text-blue-500'>
                 {' '}
@@ -160,14 +160,17 @@ const HomePage = () => {
         {/* HEADING ************************************************************************************/}
 
         <div className='flex flex-col w-full h-full pt-4 mt-4 '>
-          <p className='pl-4 text-4xl font-semibold '>
+          <p className='pl-4 text-4xl font-semibold text-gray-800 dark:text-white '>
             <span className='text-blue-500'>So,</span> What's the plan?
           </p>
 
           {/*  *****************************************************************************************/}
 
           <div className='flex flex-row items-center px-4 mt-8 '>
-            <p className='text-xl font-semibold'> Your Lists </p>
+            <p className='text-xl font-semibold text-gray-800 dark:text-white'>
+              {' '}
+              Your Lists{' '}
+            </p>
             <div className='bg-blue-400 h-[3px] ml-2 flex-1 ' />
             <button
               onClick={() => setOpenDeleteFullListModal(true)}
