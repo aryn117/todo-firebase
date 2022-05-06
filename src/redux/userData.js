@@ -1,4 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { doc, getDoc, onSnapshot } from 'firebase/firestore';
+import { db } from '../auth/firebase';
 
 //* /////////////////////////////////////////////////////////
 //* /////////////////////////////////////////////////////////
@@ -10,6 +12,7 @@ export const userDataSlice = createSlice({
     currentList: 0,
   },
   reducers: {
+    setLoading: () => {},
     //* /////////////////////////////////////////////////////////
     //* ADD ITEM TO CURRENT LIST ///////////////////////////////
     addToCurrentList: (state, action) => {
@@ -61,7 +64,6 @@ export const userDataSlice = createSlice({
     },
 
     deleteItem: (state, action) => {
-      console.log(action.payload);
       const id = action.payload;
 
       return {
@@ -88,7 +90,7 @@ export const userDataSlice = createSlice({
       });
 
       if (duplicateListCreatedFlag) {
-        console.log('Cannot Make Duplicate List');
+        // console.log('Cannot Make Duplicate List');
         return { lists: [...state.lists], currentList: 0 };
       } else {
         return {
@@ -119,17 +121,17 @@ export const userDataSlice = createSlice({
 
     //* /////////////////////////////////////////////////////////
     initialSync: (state, action) => {
-      console.log('initial Sync', action.payload);
-
-      return {
-        lists: [...action.payload],
-        currentList: state.currentList,
-      };
+      if (action.payload) {
+        return { lists: action.payload, currentList: 0 };
+      } else {
+        return {
+          ...state,
+        };
+      }
     },
 
-    sync: (state, action) => {
-      console.log('syncing');
-    },
+    // sync: (state, action) => {
+    // },
 
     //delete full list
   },

@@ -13,7 +13,8 @@ import { auth } from './firebase';
 const userAuthContext = createContext();
 
 export function UserAuthContextProvider({ children }) {
-  const [user, setUser] = useState({ 1: 1 });
+  const [user, setUser] = useState();
+  const [loading, setLoading] = useState(false);
 
   function login(email, password) {
     return signInWithEmailAndPassword(auth, email, password);
@@ -47,6 +48,8 @@ export function UserAuthContextProvider({ children }) {
         signup,
         logout,
         googleSignin,
+        loading,
+        setLoading,
       }}>
       {children}
     </userAuthContext.Provider>

@@ -3,6 +3,7 @@ import { useState, useRef, useEffect } from 'react';
 //component imports
 import ListItem from './../components/HomePage/ListItem';
 import TasksListView from './../components/HomePage/TasksListView';
+import LoadingScreen from '../components/LoadingScreen';
 
 //framer imports
 import { motion, AnimatePresence } from 'framer-motion';
@@ -37,7 +38,7 @@ const HomePage = () => {
   const dispatch = useDispatch();
   const userData = useSelector(state => state.userData);
 
-  const { user } = useUserAuth();
+  const { user, loading, setLoading } = useUserAuth();
 
   //task input-field ref
   const inputRef = useRef(null);
@@ -45,25 +46,44 @@ const HomePage = () => {
   //* ALL USERS ON SAME ACCOUNT DATA SYNC/ FIREBASE ON-SNAPSHOT REALTIME SYNC ////
 
   useEffect(() => {
+    // Fetch All tasks,Lists from firebase on Login
+    let prevState;
+    let triggered = true;
+
     if (user.uid) {
-      onSnapshot(doc(db, 'Users', user.uid), doc => {
-        if (doc.data().lists) {
+      setLoading(true);
+
+      // get initial data
+      const listener = onSnapshot(doc(db, 'Users', user.uid), doc => {
+        if (doc.data().lists.length !== 0) {
           dispatch(initialSync(doc.data().lists));
+          triggered = true;
+        }
+        if (triggered) {
+          listener();
         }
       });
+
+      setLoading(false);
     }
   }, [user]);
 
+  // Sync Data when anything in the list changes
+
   useEffect(() => {
     const firebaseSync = async () => {
-      await setDoc(doc(db, 'Users', user.uid), {
-        lists: userData.lists,
-      });
+      if (user.uid === null) return; // guard
+      if (userData.lists?.length === 0) return; // empty list
+      if (userData.lists?.length !== 0) {
+        await setDoc(doc(db, 'Users', user.uid), {
+          lists: userData.lists,
+        });
+      }
     };
-    if (user.uid) {
+    if (user.uid !== null) {
       firebaseSync();
     }
-  }, [userData.lists]);
+  }, [userData]);
 
   //* /////////////////////////////////////////////////////////////////////////////
 
@@ -72,6 +92,7 @@ const HomePage = () => {
       <div className='flex relative flex-col h-full sm:rounded-xl sm:border-2 sm:border-blue-500 w-full overflow-y-clip p-2 bg-[#F5FCFF]'>
         {/* CREATE NEW LIST PAGE **********************************************************************/}
         <AnimatePresence>
+          {loading && <LoadingScreen />}
           {openNewListModal && (
             <CreateNewListPage closeModal={setOpenNewListModal} />
           )}
