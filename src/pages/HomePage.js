@@ -20,7 +20,12 @@ import NavbarIcon from './../assets/NavbarIcon.svg';
 
 //redux imports
 import { useDispatch, useSelector } from 'react-redux';
-import { addToCurrentList, initialSync, sync } from '../redux/userData.js';
+import {
+  addToCurrentList,
+  initialSync,
+  setCurrentList,
+  sync,
+} from '../redux/userData.js';
 
 //auth
 import { useUserAuth } from '../auth/userAuthContext';
@@ -40,6 +45,31 @@ const HomePage = () => {
 
   const { user, loading, setLoading } = useUserAuth();
 
+  const days = [
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+  ];
+
+  const months = [
+    'January',
+    'Feburary',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
+
   //task input-field ref
   const inputRef = useRef(null);
 
@@ -49,6 +79,7 @@ const HomePage = () => {
     // Fetch All tasks,Lists from firebase on Login
     let prevState;
     let triggered = true;
+    console.log('triggered');
 
     if (user.uid) {
       setLoading(true);
@@ -78,7 +109,9 @@ const HomePage = () => {
         await setDoc(doc(db, 'Users', user.uid), {
           lists: userData.lists,
         });
+        setCurrentList(userData.currentList);
       }
+      console.log(userData.currentList);
     };
     if (user.uid !== null) {
       firebaseSync();
@@ -89,7 +122,7 @@ const HomePage = () => {
 
   return (
     <>
-      <div className='flex relative flex-col h-full sm:rounded-xl sm:border-2 sm:border-blue-500 w-full overflow-y-clip p-2 bg-[#F5FCFF]'>
+      <div className='flex relative flex-col h-full sm:rounded-xl sm:border-2 sm:border-blue-500 w-full overflow-y-clip dark: text-white p-2 dark:bg-gray-800 bg-[#F5FCFF]'>
         {/* CREATE NEW LIST PAGE **********************************************************************/}
         <AnimatePresence>
           {loading && <LoadingScreen />}
@@ -107,12 +140,22 @@ const HomePage = () => {
         </AnimatePresence>
 
         {/* OPEN SETTINGS BUTTON ***********************************************************************/}
-        <div className='flex flex-row'>
+        <div className='navbar justify-between flex flex-row'>
           <button
             className='px-4 py-5 active:scale-95 '
             onClick={() => setOpenSettingsToggle(true)}>
             <img src={NavbarIcon} alt='open navbar' />
           </button>
+          {/* navbar date   */}
+          <div className='flex  justify-between items-center'>
+            <h1 className='text-xl font-semibold pr-2'>
+              {days[new Date().getDay()]}, {new Date().getDay()}
+              <span className='text-blue-500'>
+                {' '}
+                {' ' + months[new Date().getMonth()]}
+              </span>
+            </h1>
+          </div>
         </div>
         {/* HEADING ************************************************************************************/}
 
@@ -151,13 +194,13 @@ const HomePage = () => {
           </div>
           {/* TASK INPUT ********************************************************************************/}
           <div
-            className='flex flex-row justify-between px-2 my-4'
+            className='flex flex-row justify-between  px-2 my-4'
             action='submit'>
             <input
               ref={inputRef}
               type='text'
               placeholder='Create Task✅'
-              className='flex w-[80%] px-4 py-3 mr-2 text-lg shadow-lg outline-none rounded-xl '
+              className='flex w-[80%] px-4 dark:bg-gray-900 dark:text-white py-3 mr-2 text-lg shadow-lg outline-none rounded-xl '
             />
             <button
               onClick={() => {

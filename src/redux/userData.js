@@ -1,6 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { doc, getDoc, onSnapshot } from 'firebase/firestore';
-import { db } from '../auth/firebase';
 
 //* /////////////////////////////////////////////////////////
 //* /////////////////////////////////////////////////////////
@@ -104,6 +102,7 @@ export const userDataSlice = createSlice({
     },
 
     setCurrentList: (state, action) => {
+      console.log(action.payload);
       return {
         lists: state.lists,
         currentList: action.payload,
@@ -122,7 +121,7 @@ export const userDataSlice = createSlice({
     //* /////////////////////////////////////////////////////////
     initialSync: (state, action) => {
       if (action.payload) {
-        return { lists: action.payload, currentList: 0 };
+        return { lists: action.payload, currentList: state.currentList };
       } else {
         return {
           ...state,

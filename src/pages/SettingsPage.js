@@ -18,7 +18,7 @@ const SettingsPage = ({ setSettingsToggle }) => {
   return (
     <motion.div
       initial={{ opacity: 0, background: 'transparent' }}
-      animate={{ background: '#D6EAF8', opacity: 1 }}
+      animate={{ background: '#444444', opacity: 1 }}
       exit={{ opacity: 0 }}
       className='absolute top-0 bottom-0 left-0 right-0 z-10 flex flex-col '>
       <motion.div
@@ -52,7 +52,7 @@ const SettingsPage = ({ setSettingsToggle }) => {
         <p className='mt-1 text-white text-md '>{user.email}</p>
         <button
           onClick={logoutHandler}
-          className='px-8 py-2 mt-12 transition-all bg-white rounded-lg shadow-md w-fit active:scale-95'>
+          className='px-8 py-2 mt-12 transition-all dark:bg-slate-900 dark:text-white text-gray-900 bg-white rounded-lg shadow-md w-fit active:scale-95'>
           Logout
         </button>
       </motion.div>
