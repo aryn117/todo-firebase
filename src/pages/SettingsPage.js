@@ -11,7 +11,7 @@ const SettingsPage = ({ setSettingsToggle }) => {
     try {
       await logout();
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 

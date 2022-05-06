@@ -16,11 +16,9 @@ const LoginPage = () => {
       await googleSignin();
       navigate('/');
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
-
-  console.log(user);
 
   return (
     <div className='flex flex-col w-full h-full  p-2 bg-[#F5FCFF]'>
