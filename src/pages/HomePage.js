@@ -103,10 +103,11 @@ const HomePage = () => {
   // Sync Data when anything in the list changes
 
   useEffect(() => {
+    console.log(userData);
     const firebaseSync = async () => {
       if (user.uid === null) return; // guard
-      if (userData.lists?.length === 0) return; // empty list
-      if (userData.lists?.length !== 0) {
+
+      if (userData.lists?.length !== -1) {
         await setDoc(doc(db, 'Users', user.uid), {
           lists: userData.lists,
         });
@@ -117,7 +118,7 @@ const HomePage = () => {
     if (user.uid !== null) {
       firebaseSync();
     }
-  }, [userData]);
+  }, [userData.lists]);
 
   //* /////////////////////////////////////////////////////////////////////////////
 
@@ -196,24 +197,27 @@ const HomePage = () => {
             ))}
           </div>
           {/* TASK INPUT ********************************************************************************/}
-          <div
-            className='flex flex-row justify-between  px-2 my-4'
-            action='submit'>
-            <input
-              ref={inputRef}
-              type='text'
-              placeholder='Create Task✅'
-              className='flex w-[80%] px-4 dark:bg-gray-900 dark:text-white text-gray-800 py-3 mr-2 text-lg shadow-lg outline-none rounded-xl '
-            />
-            <button
-              onClick={() => {
-                dispatch(addToCurrentList(inputRef.current.value));
-                inputRef.current.value = '';
-              }}
-              className='px-3 py-3 text-2xl font-bold text-white bg-blue-500 rounded-xl transition-all shadow-xl transition-duration-[300ms] active:scale-[0.98]  '>
-              <IoIosAdd />
-            </button>
-          </div>
+
+          {userData.lists.length >= 1 && (
+            <div
+              className='flex flex-row justify-between  px-2 my-4'
+              action='submit'>
+              <input
+                ref={inputRef}
+                type='text'
+                placeholder='Create Task✅'
+                className='flex w-[85%] px-4 dark:bg-gray-900 dark:text-white text-gray-800 py-3 mr-2 text-lg shadow-lg outline-none rounded-xl '
+              />
+              <button
+                onClick={() => {
+                  dispatch(addToCurrentList(inputRef.current.value));
+                  inputRef.current.value = '';
+                }}
+                className='px-3 py-3 text-2xl font-bold text-white bg-blue-500 rounded-xl transition-all shadow-xl transition-duration-[300ms] active:scale-[0.98]  '>
+                <IoIosAdd />
+              </button>
+            </div>
+          )}
           {/* TASK LIST VIEW CONTAINER *******************************************************************/}
 
           <TasksListView />

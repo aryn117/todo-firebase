@@ -65,13 +65,13 @@ const CreateNewListPage = ({ closeModal }) => {
             ref={inputRef}
             type='text'
             placeholder='Create New List'
-            className={`px-4 py-3 text-lg bg-white border-2  rounded-lg shadow-lg ${
+            className={`px-4 mb-6 py-3 text-lg  outline-none border-2 border-blue-500  text-gray-800 dark:text-white dark:bg-gray-800 bg-white  rounded-lg shadow-lg ${
               invalidInput ? 'border-red-600 ' : 'border-black'
             } `}
           />
           <button
             type='submit'
-            className='px-5 mt-6 py-3 text-lg text-white bg-blue-400 rounded-lg shadow-lg transition-all transition-duration-[300ms]  active:scale-[0.98] '>
+            className='px-5 mt-6 py-3 text-lg  text-white w-fit  bg-blue-500 rounded-lg shadow-lg transition-all transition-duration-[300ms]  active:scale-[0.98] '>
             Create New List{' '}
           </button>
         </form>

@@ -27,7 +27,11 @@ const DeleteFullListModal = ({ closeModal }) => {
       </button>
       {/* //* LIST DELETE MODAL ////////////////////////////////////// */}
       {userData.lists.length > 0 && (
-        <div className='flex flex-col p-4 w-[70%] bg-white rounded-lg shadow-2xl '>
+        <div className='flex flex-col px-4  py-12 w-[70%] dark:bg-gray-900 bg-white rounded-lg shadow-2xl '>
+          <h3 className='text-xl dark:text-white text-slate-900 py-2'>
+            Your Lists{' '}
+          </h3>
+          <div className='flex w-full bg-slate-800 dark:bg-white border-2 mb-6 rounded-2xl '></div>
           <AnimatePresence>
             {userData.lists.map(item => {
               return (
@@ -36,7 +40,7 @@ const DeleteFullListModal = ({ closeModal }) => {
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -100 }}
                   key={item.listID}
-                  className='flex items-center justify-between px-6 py-2 my-2 text-lg text-white bg-blue-500 rounded-lg'>
+                  className='flex items-center justify-between px-6 py-2 my-2 text-lg text-white bg-blue-500 dark:bg-gray-800  border-2 border-blue-500 rounded-lg'>
                   <p>{item.listName}</p>
                   <button
                     onClick={() => dispatch(deleteFullList(item.listID))}
@@ -50,8 +54,8 @@ const DeleteFullListModal = ({ closeModal }) => {
         </div>
       )}
       {userData.lists.length < 1 && (
-        <div className='flex flex-col p-4 w-[70%] bg-white rounded-lg shadow-2xl '>
-          <p className='my-4 text-xl font-semibold text-black '>
+        <div className='flex flex-col py-16 px-4 w-[70%] bg-white dark:bg-gray-900 rounded-lg shadow-2xl '>
+          <p className='my-4 text-xl font-semibold text-slate-900 dark:text-white  '>
             You Have No Lists To Delete
           </p>
         </div>
