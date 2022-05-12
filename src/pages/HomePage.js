@@ -88,7 +88,7 @@ const HomePage = () => {
         const docRef = doc(db, 'Users', user.uid);
         const docSnap = await getDoc(docRef);
 
-        if (docSnap.exists()) return; // guard
+        if (!docSnap.exists()) return;
 
         onSnapshot(doc(db, 'Users', user.uid), doc => {
           if (doc.data().lists.length !== 0) {
