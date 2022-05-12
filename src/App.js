@@ -11,7 +11,7 @@ import UnprotectedRoute from './components/UnprotectedRoute';
 
 function App() {
   return (
-    <div className='flex flex-col items-center justify-center w-full h-full sm:h-[96%] max-w-xl mx-auto rounded-2xl  sm:shadow-2xl '>
+    <div className='flex flex-col  items-center justify-center w-full h-full sm:h-[96%] max-w-xl mx-auto rounded-xl  sm:shadow-xl '>
       <Routes>
         <Route
           path='/'

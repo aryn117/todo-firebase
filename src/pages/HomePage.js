@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import dayjs from 'dayjs';
 
 //component imports
 import ListItem from './../components/HomePage/ListItem';
@@ -122,7 +123,7 @@ const HomePage = () => {
 
   return (
     <>
-      <div className='flex relative flex-col h-full sm:rounded-xl sm:border-2 sm:border-blue-500 w-full overflow-y-clip dark: text-white p-2 dark:bg-gray-800 bg-[#F5FCFF]'>
+      <div className='flex relative flex-col h-full rounded-lg shadow-sm  md:shadow-2xl   w-full overflow-y-clip dark: text-white p-2 dark:bg-gray-800 bg-[#F5FCFF]'>
         {/* CREATE NEW LIST PAGE **********************************************************************/}
         <AnimatePresence>
           {loading && <LoadingScreen />}
@@ -149,10 +150,9 @@ const HomePage = () => {
           {/* navbar date   */}
           <div className='flex  justify-between items-center'>
             <h1 className='text-xl text-gray-800 dark:text-white font-semibold pr-2'>
-              {days[new Date().getDay()]}, {new Date().getDay()}
-              <span className='text-blue-500'>
-                {' '}
-                {' ' + months[new Date().getMonth()]}
+              {days[dayjs().day()] + ',' + dayjs().date()}
+              <span className='text-blue-500 text-xl '>
+                {' ' + months[dayjs().month()]}
               </span>
             </h1>
           </div>
@@ -215,6 +215,7 @@ const HomePage = () => {
             </button>
           </div>
           {/* TASK LIST VIEW CONTAINER *******************************************************************/}
+
           <TasksListView />
         </div>
       </div>
