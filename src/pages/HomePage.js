@@ -88,14 +88,14 @@ const HomePage = () => {
         const docRef = doc(db, 'Users', user.uid);
         const docSnap = await getDoc(docRef);
 
-        if (!docSnap.exists()) return;
-
-        onSnapshot(doc(db, 'Users', user.uid), doc => {
-          if (doc.data().lists.length !== 0) {
-            dispatch(initialSync(doc.data().lists));
-            triggered = true;
-          }
-        });
+        if (docSnap.exists()) {
+          onSnapshot(doc(db, 'Users', user.uid), doc => {
+            if (doc.data().lists.length !== 0) {
+              dispatch(initialSync(doc.data().lists));
+              triggered = true;
+            }
+          });
+        }
 
         setLoading(false);
       }
