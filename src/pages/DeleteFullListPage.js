@@ -2,6 +2,12 @@
 import cancelIcon from './../assets/CancelIcon.svg';
 import { AiOutlineDelete } from 'react-icons/ai';
 
+import { useUserAuth } from '../auth/userAuthContext';
+
+//? firebase imports
+import { db } from '../auth/firebase';
+import { doc, deleteDoc } from 'firebase/firestore';
+
 //framer imports
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -12,6 +18,20 @@ import { deleteFullList } from './../redux/userData';
 const DeleteFullListModal = ({ closeModal }) => {
   const dispatch = useDispatch();
   const userData = useSelector(state => state.userData);
+  const { user } = useUserAuth();
+
+  const deleteHandler = async id => {
+    const docRef = doc(db, 'Users', user.uid);
+    console.log(docRef, userData.lists.length);
+
+    if (userData.lists.length === 1) {
+      console.log('doc delete triggered', user.uid);
+
+      const res = await deleteDoc(docRef);
+      console.log(res);
+    }
+    dispatch(deleteFullList(id));
+  };
 
   return (
     <motion.div
@@ -43,7 +63,7 @@ const DeleteFullListModal = ({ closeModal }) => {
                   className='flex items-center justify-between px-6 py-2 my-2 text-lg text-white bg-blue-500 dark:bg-gray-800  border-2 border-blue-500 rounded-lg'>
                   <p>{item.listName}</p>
                   <button
-                    onClick={() => dispatch(deleteFullList(item.listID))}
+                    onClick={() => deleteHandler(item.listID)}
                     className='p-2 ml-2 text-xl text-white transition-all bg-red-400 rounded-lg active:scale-95'>
                     <AiOutlineDelete />
                   </button>

@@ -25,14 +25,13 @@ import {
   addToCurrentList,
   initialSync,
   setCurrentList,
-  sync,
 } from '../redux/userData.js';
 
 //auth
 import { useUserAuth } from '../auth/userAuthContext';
 
 //firebase
-import { onSnapshot, doc, setDoc } from 'firebase/firestore';
+import { onSnapshot, doc, setDoc, getDoc } from 'firebase/firestore';
 import { db } from '../auth/firebase';
 
 const HomePage = () => {
@@ -77,43 +76,46 @@ const HomePage = () => {
   //* ALL USERS ON SAME ACCOUNT DATA SYNC/ FIREBASE ON-SNAPSHOT REALTIME SYNC ////
 
   useEffect(() => {
-    // Fetch All tasks,Lists from firebase on Login
-    let prevState;
-    let triggered = true;
-    console.log('triggered');
+    const sync = async () => {
+      // Fetch All tasks,Lists from firebase on Login
+      let prevState;
+      let triggered = true;
 
-    if (user.uid) {
-      setLoading(true);
+      if (user.uid) {
+        setLoading(true);
 
-      // get initial data
-      const listener = onSnapshot(doc(db, 'Users', user.uid), doc => {
-        if (doc.data().lists.length !== 0) {
-          dispatch(initialSync(doc.data().lists));
-          triggered = true;
-        }
-        // if (triggered) {
-        //   listener();
-        // }
-      });
+        // get initial data
+        const docRef = doc(db, 'Users', user.uid);
+        const docSnap = await getDoc(docRef);
 
-      setLoading(false);
-    }
+        if (docSnap.exists()) return; // guard
+
+        onSnapshot(doc(db, 'Users', user.uid), doc => {
+          if (doc.data().lists.length !== 0) {
+            dispatch(initialSync(doc.data().lists));
+            triggered = true;
+          }
+        });
+
+        setLoading(false);
+      }
+    };
+
+    sync();
   }, [user]);
 
   // Sync Data when anything in the list changes
 
   useEffect(() => {
-    console.log(userData);
     const firebaseSync = async () => {
       if (user.uid === null) return; // guard
-
+      if (userData.lists?.length === 0) return; // empty list
       if (userData.lists?.length !== -1) {
         await setDoc(doc(db, 'Users', user.uid), {
           lists: userData.lists,
         });
         setCurrentList(userData.currentList);
       }
-      console.log(userData.currentList);
     };
     if (user.uid !== null) {
       firebaseSync();
@@ -125,9 +127,9 @@ const HomePage = () => {
   return (
     <>
       <div className='flex relative flex-col h-full rounded-lg shadow-sm  md:shadow-2xl   w-full overflow-y-clip dark: text-white p-2 dark:bg-gray-800 bg-[#F5FCFF]'>
+        {loading && <LoadingScreen />}
         {/* CREATE NEW LIST PAGE **********************************************************************/}
         <AnimatePresence>
-          {loading && <LoadingScreen />}
           {openNewListModal && (
             <CreateNewListPage closeModal={setOpenNewListModal} />
           )}

@@ -1,7 +1,7 @@
 const LoadingScreen = () => {
   return (
-    <div className='absolute t-0 b-0 r-0 l-0 flex bg-slate-500 text-4xl text-red-500 font-bold'>
-      Loading
+    <div className='absolute top-0 bottom-0 left-0 right-0 z-10 flex flex-col items-center text-blue-500 text-6xl font-bold justify-center bg-slate-900'>
+      Loading...
     </div>
   );
 };
