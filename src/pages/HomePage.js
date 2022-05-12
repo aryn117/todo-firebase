@@ -77,10 +77,6 @@ const HomePage = () => {
 
   useEffect(() => {
     const sync = async () => {
-      // Fetch All tasks,Lists from firebase on Login
-      let prevState;
-      let triggered = true;
-
       if (user.uid) {
         setLoading(true);
 
@@ -90,9 +86,8 @@ const HomePage = () => {
 
         if (docSnap.exists()) {
           onSnapshot(doc(db, 'Users', user.uid), doc => {
-            if (doc.data().lists.length !== 0) {
+            if (doc.data()?.lists) {
               dispatch(initialSync(doc.data().lists));
-              triggered = true;
             }
           });
         }
@@ -109,7 +104,7 @@ const HomePage = () => {
   useEffect(() => {
     const firebaseSync = async () => {
       if (user.uid === null) return; // guard
-      if (userData.lists?.length === 0) return; // empty list
+      // if (userData.lists?.length === 0) return; // empty list
       if (userData.lists?.length !== -1) {
         await setDoc(doc(db, 'Users', user.uid), {
           lists: userData.lists,

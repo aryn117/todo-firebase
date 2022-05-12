@@ -15,6 +15,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteFullList } from './../redux/userData';
 
+import { initialSync } from '../redux/userData.js';
+
 const DeleteFullListModal = ({ closeModal }) => {
   const dispatch = useDispatch();
   const userData = useSelector(state => state.userData);
@@ -25,10 +27,8 @@ const DeleteFullListModal = ({ closeModal }) => {
     console.log(docRef, userData.lists.length);
 
     if (userData.lists.length === 1) {
-      console.log('doc delete triggered', user.uid);
-
       const res = await deleteDoc(docRef);
-      console.log(res);
+      console.log(userData);
     }
     dispatch(deleteFullList(id));
   };
